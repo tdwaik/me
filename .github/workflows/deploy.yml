@@ -6,6 +6,14 @@ on:
       - main
       - master
   workflow_dispatch:
+    inputs:
+      environment:
+        description: "GitHub Environment to deploy"
+        required: true
+        default: "prod"
+        type: choice
+        options:
+          - prod
 
 permissions:
   id-token: write
@@ -17,14 +25,15 @@ concurrency:
 
 env:
   AWS_REGION: us-west-2
-  # Set in GitHub repo variables (Settings -> Secrets and variables -> Actions -> Variables)
-  S3_BUCKET: ${{ vars.AWS_S3_BUCKET }}
-  # Optional: set if using CloudFront
+  S3_BUCKET: thaer-me
+  # Optional: set as GitHub Environment variable
   CLOUDFRONT_DISTRIBUTION_ID: ${{ vars.AWS_CLOUDFRONT_DISTRIBUTION_ID }}
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    environment:
+      name: ${{ github.event_name == 'workflow_dispatch' && inputs.environment || 'prod' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -40,11 +49,6 @@ jobs:
 
       - name: Sync site to S3
         run: |
-          if [ -z "$S3_BUCKET" ]; then
-            echo "AWS_S3_BUCKET repository variable is required"
-            exit 1
-          fi
-
           aws s3 sync . "s3://$S3_BUCKET" \
             --delete \
             --exclude ".git/*" \
