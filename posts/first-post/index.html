@@ -3,59 +3,58 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Why I keep my sites boring — Thaer Aldwaik</title>
+  <title>Why I keep my sites boring - Thaer Aldwaik</title>
   <meta name="description" content="Minimal sites are easier to host, secure, cache, and keep stable." />
   <link rel="canonical" href="https://thaer.dev/posts/first-post/" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" />
   <link rel="stylesheet" href="/assets/css/main.css" />
 </head>
 <body>
-  <header class="header">
+  <header class="navbar navbar-expand-md bg-body-tertiary border-bottom sticky-top site-nav">
     <div class="container">
-      <nav class="nav" aria-label="Primary">
-        <a class="brand" href="/">Thaer</a>
-        <div class="links">
-          <a href="/about/">About</a>
-          <a href="/posts/">Writing</a>
-          <a class="btn" href="/#contact">Contact</a>
-        </div>
-      </nav>
+      <a class="navbar-brand fw-semibold" href="/">Thaer</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMain" aria-controls="navMain" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navMain">
+        <ul class="navbar-nav ms-auto align-items-md-center gap-md-2">
+          <li class="nav-item"><a class="nav-link" href="/about/">About</a></li>
+          <li class="nav-item"><a class="nav-link" href="/posts/">Writing</a></li>
+          <li class="nav-item"><a class="btn btn-dark btn-sm mt-2 mt-md-0" href="/#contact">Contact</a></li>
+        </ul>
+      </div>
     </div>
   </header>
 
-  <main class="container prose">
-    <article>
-      <p class="kicker">Feb 2026</p>
-      <h1>Why I keep my sites boring</h1>
-      <p class="lead">
-        I like static sites because they’re predictable: cheap to host, fast, and easy to secure.
-      </p>
+  <main class="container py-5 article-width">
+    <article class="card shadow-sm">
+      <div class="card-body p-4 p-md-5">
+        <p class="kicker text-secondary fw-semibold mb-2">Feb 2026</p>
+        <h1 class="display-6 fw-bold">Why I keep my sites boring</h1>
+        <p class="lead">I like static sites because they are predictable: cheap to host, fast, and easy to secure.</p>
 
-      <h2>Less moving parts</h2>
-      <p>
-        A static site removes a whole class of failure: databases, servers, patching, dependency drift.
-        For a personal site, that’s exactly what I want.
-      </p>
+        <h2 class="h4 mt-4">Less moving parts</h2>
+        <p>
+          A static site removes a whole class of failure: databases, servers, patching, and dependency drift.
+          For a personal site, that is exactly what I want.
+        </p>
 
-      <h2>Better caching</h2>
-      <p>
-        CloudFront loves static content. It’s fast globally and trivial to invalidate when I publish.
-      </p>
+        <h2 class="h4 mt-4">Better caching</h2>
+        <p>CloudFront loves static content. It is fast globally and trivial to invalidate when I publish.</p>
 
-      <h2>Security by simplicity</h2>
-      <p>
-        Fewer dynamic endpoints means a smaller attack surface. No auth. No sessions. No surprises.
-      </p>
+        <h2 class="h4 mt-4">Security by simplicity</h2>
+        <p>Fewer dynamic endpoints means a smaller attack surface. No auth. No sessions. No surprises.</p>
 
-      <p class="muted">
-        Back to <a href="/posts/">Writing</a>.
-      </p>
+        <p class="mb-0 text-secondary">Back to <a href="/posts/">Writing</a>.</p>
+      </div>
     </article>
+
+    <footer class="pt-5">
+      <p class="footer-note mb-0">� <span id="y"></span> Thaer Aldwaik</p>
+    </footer>
   </main>
 
-  <footer class="footer container">
-    <p>© <span id="y"></span> Thaer Aldwaik</p>
-  </footer>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script>document.getElementById("y").textContent = new Date().getFullYear();</script>
 </body>
 </html>
-
