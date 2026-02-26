@@ -1,0 +1,15 @@
+aws_region = "us-east-1"
+
+github_owner = "your-github-owner"
+github_repo  = "your-repo-name"
+
+allowed_branches = ["main", "master"]
+
+create_oidc_provider = true
+role_name            = "github-actions-deploy-role"
+
+s3_bucket_name             = "your-site-bucket-name"
+cloudfront_distribution_id = ""
+
+site_domain = "thaer.dev"
+www_domain  = "www.thaer.dev"

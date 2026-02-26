@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Thaer Aldwaik — Senior Backend Engineer</title>
+  <meta name="description" content="Thaer Aldwaik — Senior Backend Engineer focused on identity, platform systems, and AWS. Personal blog + CV." />
+  <meta name="robots" content="index,follow" />
+
+  <link rel="canonical" href="https://thaer.dev/" />
+  <link rel="stylesheet" href="/assets/css/main.css" />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Thaer Aldwaik" />
+  <meta property="og:description" content="Senior Backend Engineer · Identity & Platform Systems · Personal blog + CV." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://thaer.dev/" />
+  <meta property="og:image" content="https://thaer.dev/assets/img/og-default.png" />
+
+  <!-- Simple JSON-LD -->
+  <script type="application/ld+json">
+  {
+    "@context":"https://schema.org",
+    "@type":"Person",
+    "name":"Thaer Aldwaik",
+    "jobTitle":"Senior Backend Engineer",
+    "url":"https://thaer.dev/",
+    "sameAs":[
+      "https://github.com/YOUR_GITHUB",
+      "https://www.linkedin.com/in/YOUR_LINKEDIN"
+    ]
+  }
+  </script>
+</head>
+<body>
+  <a class="skip" href="#content">Skip to content</a>
+
+  <header class="header">
+    <div class="container">
+      <nav class="nav" aria-label="Primary">
+        <a class="brand" href="/">Thaer</a>
+        <div class="links">
+          <a href="/about/">About</a>
+          <a href="/posts/">Writing</a>
+          <a class="btn" href="#contact">Contact</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main id="content" class="container">
+    <section class="hero">
+      <p class="kicker">Senior Backend Engineer · Identity & Platform Systems</p>
+      <h1>Building reliable identity platforms, shipping practical systems, racing cars on weekends.</h1>
+      <p class="lead">
+        I work on authentication, SSO, and platform infrastructure — the intersection of application code, cloud, and security.
+        This site is a simple home for my CV, projects, and notes.
+      </p>
+      <div class="cta">
+        <a class="btn" href="/about/">Read my story</a>
+        <a class="btn secondary" href="/posts/">Browse posts</a>
+      </div>
+    </section>
+
+    <section class="grid">
+      <article class="card">
+        <h2>Focus</h2>
+        <ul>
+          <li>OAuth2 / OIDC, session & token strategies</li>
+          <li>AWS + Kubernetes + Terraform</li>
+          <li>.NET & Java services in production</li>
+          <li>Audit-friendly, boring reliability</li>
+        </ul>
+      </article>
+
+      <article class="card">
+        <h2>Now</h2>
+        <p>
+          Currently working in identity & authentication, modernizing platforms with security and operability in mind.
+          Personal projects: local-first assistant tooling and writing small, useful notes.
+        </p>
+      </article>
+
+      <article class="card">
+        <h2>Latest</h2>
+        <p><a href="/posts/first-post/">First Post: Why I keep my sites boring</a></p>
+        <p class="muted">More soon.</p>
+      </article>
+    </section>
+
+    <section id="contact" class="card contact">
+      <h2>Contact</h2>
+      <p>If you want to talk identity systems, platform architecture, or interesting problems:</p>
+      <div class="contact-links">
+        <a href="mailto:YOU@EMAIL.com">Email</a>
+        <a href="https://github.com/YOUR_GITHUB" rel="me">GitHub</a>
+        <a href="https://www.linkedin.com/in/YOUR_LINKEDIN" rel="me">LinkedIn</a>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <p>© <span id="y"></span> Thaer Aldwaik · Built as a static site on AWS</p>
+    </footer>
+  </main>
+
+  <script>
+    document.getElementById("y").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
+

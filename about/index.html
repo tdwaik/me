@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>About — Thaer Aldwaik</title>
+  <meta name="description" content="About Thaer Aldwaik — Senior Backend Engineer focused on identity, platform systems, and AWS." />
+  <link rel="canonical" href="https://thaer.dev/about/" />
+  <link rel="stylesheet" href="/assets/css/main.css" />
+</head>
+<body>
+  <header class="header">
+    <div class="container">
+      <nav class="nav" aria-label="Primary">
+        <a class="brand" href="/">Thaer</a>
+        <div class="links">
+          <a aria-current="page" href="/about/">About</a>
+          <a href="/posts/">Writing</a>
+          <a class="btn" href="/#contact">Contact</a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container prose">
+    <h1>About</h1>
+    <p>
+      I’m a senior backend engineer working on identity, authentication, and platform infrastructure.
+      I care about systems that are secure, observable, and boring in production.
+    </p>
+
+    <h2>What I build</h2>
+    <ul>
+      <li>SSO and authentication services (OIDC/OAuth2), token/session strategies</li>
+      <li>AWS + Kubernetes deployments with Terraform and sensible CI/CD</li>
+      <li>Reliable .NET and Java services with operational guardrails</li>
+    </ul>
+
+    <h2>How I work</h2>
+    <ul>
+      <li>Prefer explicit configuration over magic</li>
+      <li>Design migrations to be reversible</li>
+      <li>Optimize for real production failure modes</li>
+    </ul>
+
+    <h2>Outside work</h2>
+    <p>
+      I build and race a BMW E46 track car. It keeps me honest about preparation, margins, and respect for failure.
+    </p>
+
+    <p class="muted">
+      Want the short version? <a href="/">Home</a> · <a href="/posts/">Writing</a>
+    </p>
+  </main>
+
+  <footer class="footer container">
+    <p>© <span id="y"></span> Thaer Aldwaik</p>
+  </footer>
+  <script>document.getElementById("y").textContent = new Date().getFullYear();</script>
+</body>
+</html>
+

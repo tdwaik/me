@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://thaer.dev/sitemap.xml
+

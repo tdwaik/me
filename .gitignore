@@ -1,0 +1,21 @@
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+*.tfplan
+crash.log
+crash.*.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraformrc
+terraform.rc
+
+# Terraform variables with secrets (keep env templates tracked)
+*.auto.tfvars
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+.vscode/
