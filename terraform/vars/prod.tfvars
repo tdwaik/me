@@ -4,7 +4,7 @@ github_owner = "tdwaik"
 github_repo  = "me"
 
 allowed_branches     = ["main", "master"]
-allowed_environments = []
+allowed_environments = ["prod"]
 
 create_oidc_provider = true
 role_name            = "github-actions-deployer-prod"
