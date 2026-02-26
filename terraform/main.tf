@@ -14,6 +14,15 @@ locals {
   allowed_subjects = concat(local.branch_subjects, local.environment_subjects)
 }
 
+resource "aws_acm_certificate" "site" {
+  count    = var.create_acm_certificate ? 1 : 0
+  provider = aws.us_east_1
+
+  domain_name               = var.site_domain
+  subject_alternative_names = var.www_domain == "" ? [] : [var.www_domain]
+  validation_method         = "DNS"
+}
+
 resource "aws_s3_bucket" "site" {
   count = var.create_s3_bucket ? 1 : 0
 
@@ -67,6 +76,9 @@ data "aws_s3_bucket" "site_existing" {
 
 locals {
   s3_bucket_regional_domain_name = var.create_s3_bucket ? aws_s3_bucket.site[0].bucket_regional_domain_name : data.aws_s3_bucket.site_existing[0].bucket_regional_domain_name
+  requested_acm_certificate_arn  = var.create_acm_certificate ? aws_acm_certificate.site[0].arn : var.acm_certificate_arn_us_east_1
+  effective_acm_certificate_arn  = var.enable_custom_domain ? local.requested_acm_certificate_arn : ""
+  cloudfront_aliases             = var.enable_custom_domain ? compact([var.site_domain, var.www_domain]) : []
 }
 
 resource "aws_cloudfront_origin_access_control" "site" {
@@ -79,6 +91,29 @@ resource "aws_cloudfront_origin_access_control" "site" {
   signing_protocol                  = "sigv4"
 }
 
+resource "aws_cloudfront_function" "url_rewrite" {
+  count = var.create_cloudfront_distribution ? 1 : 0
+
+  name    = "${var.s3_bucket_name}-url-rewrite"
+  runtime = "cloudfront-js-2.0"
+  comment = "Rewrite extensionless and folder URLs to index.html"
+  publish = true
+  code    = <<-EOT
+    function handler(event) {
+      var request = event.request;
+      var uri = request.uri;
+
+      if (uri.endsWith('/')) {
+        request.uri += 'index.html';
+      } else if (!uri.includes('.')) {
+        request.uri += '/index.html';
+      }
+
+      return request;
+    }
+  EOT
+}
+
 resource "aws_cloudfront_distribution" "site" {
   count = var.create_cloudfront_distribution ? 1 : 0
 
@@ -87,6 +122,7 @@ resource "aws_cloudfront_distribution" "site" {
   comment             = "Static site distribution for ${var.s3_bucket_name}"
   default_root_object = "index.html"
   price_class         = var.cloudfront_price_class
+  aliases             = local.cloudfront_aliases
 
   origin {
     domain_name              = local.s3_bucket_regional_domain_name
@@ -100,6 +136,11 @@ resource "aws_cloudfront_distribution" "site" {
     allowed_methods        = ["GET", "HEAD", "OPTIONS"]
     cached_methods         = ["GET", "HEAD", "OPTIONS"]
     compress               = true
+
+    function_association {
+      event_type   = "viewer-request"
+      function_arn = aws_cloudfront_function.url_rewrite[0].arn
+    }
 
     forwarded_values {
       query_string = false
@@ -115,8 +156,27 @@ resource "aws_cloudfront_distribution" "site" {
     }
   }
 
-  viewer_certificate {
-    cloudfront_default_certificate = true
+  dynamic "viewer_certificate" {
+    for_each = local.effective_acm_certificate_arn == "" ? [1] : []
+    content {
+      cloudfront_default_certificate = true
+    }
+  }
+
+  dynamic "viewer_certificate" {
+    for_each = local.effective_acm_certificate_arn != "" ? [1] : []
+    content {
+      acm_certificate_arn      = local.effective_acm_certificate_arn
+      ssl_support_method       = "sni-only"
+      minimum_protocol_version = "TLSv1.2_2021"
+    }
+  }
+
+  lifecycle {
+    precondition {
+      condition     = var.enable_custom_domain ? local.effective_acm_certificate_arn != "" : true
+      error_message = "enable_custom_domain=true requires acm_certificate_arn_us_east_1 or create_acm_certificate=true."
+    }
   }
 }
 
@@ -170,7 +230,7 @@ data "aws_cloudfront_distribution" "selected" {
 }
 
 locals {
-  github_oidc_provider_arn = var.create_oidc_provider ? aws_iam_openid_connect_provider.github[0].arn : data.aws_iam_openid_connect_provider.github[0].arn
+  github_oidc_provider_arn             = var.create_oidc_provider ? aws_iam_openid_connect_provider.github[0].arn : data.aws_iam_openid_connect_provider.github[0].arn
   effective_cloudfront_distribution_id = var.create_cloudfront_distribution ? aws_cloudfront_distribution.site[0].id : var.cloudfront_distribution_id
   cloudfront_domain_name               = var.create_cloudfront_distribution ? aws_cloudfront_distribution.site[0].domain_name : (var.cloudfront_distribution_id == "" ? "" : data.aws_cloudfront_distribution.selected[0].domain_name)
 }

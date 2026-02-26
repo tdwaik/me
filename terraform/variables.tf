@@ -85,6 +85,24 @@ variable "www_domain" {
   default     = ""
 }
 
+variable "acm_certificate_arn_us_east_1" {
+  description = "ACM certificate ARN in us-east-1 for CloudFront custom domains."
+  type        = string
+  default     = ""
+}
+
+variable "create_acm_certificate" {
+  description = "Create an ACM certificate in us-east-1 for CloudFront custom domains."
+  type        = bool
+  default     = false
+}
+
+variable "enable_custom_domain" {
+  description = "Attach site_domain/www_domain aliases to CloudFront. Enable only after cert is issued."
+  type        = bool
+  default     = false
+}
+
 variable "github_oidc_thumbprints" {
   description = "Thumbprint list for the GitHub OIDC provider."
   type        = list(string)

@@ -16,6 +16,10 @@ create_cloudfront_distribution = true
 cloudfront_distribution_id = ""
 
 site_domain = "thaer.dev"
-www_domain  = "www.thaer.dev"
+www_domain  = ""
+
+create_acm_certificate      = true
+enable_custom_domain        = true
+acm_certificate_arn_us_east_1 = ""
 
 github_oidc_thumbprints = ["6938fd4d98bab03faadb97b34396831e3780aea1"]

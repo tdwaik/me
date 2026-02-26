@@ -52,3 +52,20 @@ output "cloudfront_distribution_domain_name" {
   description = "CloudFront domain name."
   value       = local.cloudfront_domain_name
 }
+
+output "acm_certificate_arn_us_east_1" {
+  description = "ACM certificate ARN used for CloudFront aliases."
+  value       = local.requested_acm_certificate_arn == "" ? null : local.requested_acm_certificate_arn
+}
+
+output "acm_dns_validation_records" {
+  description = "Create these CNAME records in Cloudflare, then wait for ACM to issue."
+  value = var.create_acm_certificate ? [
+    for dvo in aws_acm_certificate.site[0].domain_validation_options : {
+      domain_name  = dvo.domain_name
+      record_name  = dvo.resource_record_name
+      record_type  = dvo.resource_record_type
+      record_value = dvo.resource_record_value
+    }
+  ] : []
+}
