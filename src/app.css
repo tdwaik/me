@@ -1,14 +1,32 @@
 @import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
 
-/* Optional: your custom styles below */
-
-:root {
-  --surface: 10 12 18;
-  --ink: 255 255 255;
-  --accent: 99 102 241;
+@theme {
+  --font-sans: "Sora", "Inter", "Segoe UI", sans-serif;
+  --font-serif: "Fraunces", "Georgia", serif;
 }
 
-body {
-  background: rgb(var(--surface));
-  color: rgb(var(--ink));
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    min-width: 320px;
+    min-height: 100vh;
+    font-family: var(--font-sans);
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
 }
