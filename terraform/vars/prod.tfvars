@@ -10,6 +10,9 @@ create_oidc_provider = true
 role_name            = "github-actions-deployer-prod"
 
 s3_bucket_name             = "thaer-me"
+create_s3_bucket           = true
+s3_bucket_force_destroy    = false
+create_cloudfront_distribution = true
 cloudfront_distribution_id = ""
 
 site_domain = "thaer.dev"

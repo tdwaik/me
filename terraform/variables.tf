@@ -43,10 +43,34 @@ variable "s3_bucket_name" {
   type        = string
 }
 
+variable "create_s3_bucket" {
+  description = "Create the deploy S3 bucket in this Terraform stack."
+  type        = bool
+  default     = true
+}
+
+variable "s3_bucket_force_destroy" {
+  description = "Allow Terraform to delete non-empty bucket contents on destroy."
+  type        = bool
+  default     = false
+}
+
 variable "cloudfront_distribution_id" {
-  description = "Optional CloudFront distribution ID for cache invalidation."
+  description = "Optional existing CloudFront distribution ID (used when not creating one here)."
   type        = string
   default     = ""
+}
+
+variable "create_cloudfront_distribution" {
+  description = "Create a CloudFront distribution in this Terraform stack."
+  type        = bool
+  default     = true
+}
+
+variable "cloudfront_price_class" {
+  description = "CloudFront price class."
+  type        = string
+  default     = "PriceClass_100"
 }
 
 variable "site_domain" {

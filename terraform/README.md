@@ -3,6 +3,7 @@
 Creates:
 - GitHub OIDC provider (optional, one per AWS account)
 - IAM role trusted by GitHub Actions OIDC tokens for specific repo/branches
+- S3 bucket for site deploy (optional, recommended)
 - IAM policy for S3 deploy and optional CloudFront invalidation
 
 ## 1) Configure inputs
@@ -15,7 +16,10 @@ Edit `vars/prod.tfvars`:
 - `github_owner`
 - `github_repo`
 - `s3_bucket_name`
-- optional `cloudfront_distribution_id`
+- optional `create_s3_bucket` (default `true`)
+- optional `s3_bucket_force_destroy` (default `false`)
+- optional `create_cloudfront_distribution` (default `true`)
+- optional `cloudfront_distribution_id` (only when reusing an existing distribution)
 - optional `site_domain` (for example `thaer.dev`)
 - optional `www_domain` (for example `www.thaer.dev`)
 
@@ -38,7 +42,7 @@ terraform apply -var-file=vars/prod.tfvars
 
 ## 4) Cloudflare DNS for custom domain
 
-If `cloudfront_distribution_id` is set, Terraform also outputs DNS targets for Cloudflare.
+If CloudFront is created (or `cloudfront_distribution_id` is provided), Terraform outputs DNS targets for Cloudflare.
 
 Create the following DNS records in Cloudflare (proxied):
 - `cloudflare_apex_record_name` -> `cloudflare_apex_record_target` (CNAME)

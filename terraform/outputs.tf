@@ -10,7 +10,7 @@ output "aws_s3_bucket_variable" {
 
 output "aws_cloudfront_distribution_variable" {
   description = "Set this as GitHub variable AWS_CLOUDFRONT_DISTRIBUTION_ID when used."
-  value       = var.cloudfront_distribution_id
+  value       = local.effective_cloudfront_distribution_id
 }
 
 output "github_oidc_provider_arn" {
@@ -46,4 +46,9 @@ output "cloudflare_www_record_type" {
 output "cloudflare_www_record_target" {
   description = "Cloudflare www CNAME target (enable proxy in Cloudflare)."
   value       = var.www_domain == "" || local.cloudfront_domain_name == "" ? null : local.cloudfront_domain_name
+}
+
+output "cloudfront_distribution_domain_name" {
+  description = "CloudFront domain name."
+  value       = local.cloudfront_domain_name
 }
