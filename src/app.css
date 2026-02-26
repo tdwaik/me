@@ -1,0 +1,14 @@
+@import "tailwindcss";
+
+/* Optional: your custom styles below */
+
+:root {
+  --surface: 10 12 18;
+  --ink: 255 255 255;
+  --accent: 99 102 241;
+}
+
+body {
+  background: rgb(var(--surface));
+  color: rgb(var(--ink));
+}
