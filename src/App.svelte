@@ -101,45 +101,59 @@
   const experience: Experience[] = [
     {
       title: 'Senior Software Engineer',
-      company: 'Siteimprove.com',
-      period: '2023 - Present',
+      company: 'Siteimprove',
+      period: 'Dec 2023 - Present',
       bullets: [
-        'Owned authentication and SSO architecture across internal and third-party integrations.',
-        'Drove migration from in-house identity services to a cloud-based identity provider.',
-        'Strengthened token, session, middleware, and access-policy controls to improve security and stability.',
-        'Partnered with platform and infrastructure teams on release consistency and compliance readiness, including FedRAMP preparation.'
+        'Designed and maintained identity and authentication services powering OAuth 2 flows across multiple applications.',
+        'Contributed to FedRAMP readiness initiatives.',
+        'Built and improved CI/CD pipelines using GitHub Actions.',
+        'Worked with Kubernetes and AWS to deploy and operate scalable, secure backend systems.',
+        'Implemented session handling logic to support complex authentication and access scenarios.',
+        'Collaborated closely with platform, security, and infrastructure teams to align with compliance and architecture standards.'
       ]
     },
     {
-      title: 'Software Development Engineer',
+      title: 'Software Engineer',
       company: 'Amazon Web Services (AWS)',
-      period: '2017 - 2023',
+      period: 'May 2017 - Dec 2023',
       bullets: [
-        'Designed and shipped features for large-scale data pipelines, propagation systems, and B2B messaging services.',
-        'Owned service initiatives end-to-end with emphasis on customer impact, scalability, and maintainability.',
-        'Reduced operational overhead through internal tooling and workflow improvements.',
-        'Supported 24/7 on-call operations, incident response, and scaling readiness for peak events.'
+        'Developed data propagation pipelines, supporting scalable data flow across distributed services.',
+        'Contributed to building high-volume B2B messaging systems, focusing on reliability and performance.',
+        'Implemented operational tooling and automation to improve system monitoring and reduce manual intervention.',
+        'Participated in stress testing and capacity planning for peak traffic scenarios.',
+        'Supported production services through on-call rotation, incident response, and root cause analysis.'
       ]
     },
     {
       title: 'Software Engineer',
       company: 'Souq.com',
-      period: '2014 - 2017',
+      period: 'Sep 2014 - May 2017',
       bullets: [
-        'Delivered product features and technical designs while modernizing legacy systems toward microservices.',
-        'Integrated third-party systems and improved internal documentation, code review quality, and engineering standards.',
-        'Collaborated with product and program stakeholders on planning, scope, and execution across multiple initiatives.'
+        'Wrote technical designs, implementation plans, and task breakdowns for multiple projects.',
+        'Developed new features for core products and revamped legacy code toward microservices.',
+        'Ran stress testing and planned for future scaling and peak events like Black Friday.',
+        'Reviewed code, provided team feedback, and upheld coding best practices and quality standards.',
+        'Collaborated with business, product, and program stakeholders on planning and scoping.'
+      ]
+    },
+    {
+      title: 'Software Engineer',
+      company: 'OpenSooq.com',
+      period: 'Apr 2014 - Sep 2014',
+      bullets: [
+        'Developed core website features including product views and admin panels.',
+        'Built an advertising system enabling sellers to post listings on the platform.'
       ]
     },
     {
       title: 'Software Engineer',
       company: 'Builders Software Solutions',
-      period: '2013 - 2014',
+      period: 'Apr 2013 - Apr 2014',
       bullets: [
-        'Develop new features for a “Human Resource System (HRS)” based on clients requests.',
-        'Participate in design and implementation to move to cloud based service (Using AWS).',
-        'Revamp multiple parts of the system.',
-        "Setup HRS onsite (local servers) for multiple clients based on their requests."
+        'Developed and implemented new features for an in-house Human Resource System (HRS).',
+        'Participated in design and implementation to migrate the system to AWS cloud services.',
+        'Wrote security patches and revamped multiple parts of the system.',
+        'Worked directly with clients to collect and implement requirements, including onsite server setups.'
       ]
     }
   ]
