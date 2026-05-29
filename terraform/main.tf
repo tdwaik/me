@@ -373,10 +373,38 @@ data "aws_iam_policy_document" "deploy" {
     resources = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/date-api-lambda-role"]
   }
 
-  # Needed by Terraform to verify log group state after Lambda creation
+  # Read permissions Terraform needs to refresh all managed resources during plan/apply
   statement {
-    sid     = "AllowLogsDescribe"
-    actions = ["logs:DescribeLogGroups"]
+    sid = "AllowTerraformRefresh"
+    actions = [
+      "acm:DescribeCertificate",
+      "acm:ListTagsForCertificate",
+      "cloudfront:GetDistribution",
+      "cloudfront:GetDistributionConfig",
+      "cloudfront:GetOriginAccessControl",
+      "cloudfront:GetOriginAccessControlConfig",
+      "cloudfront:DescribeFunction",
+      "cloudfront:GetFunction",
+      "cloudfront:ListTagsForResource",
+      "iam:GetOpenIDConnectProvider",
+      "iam:GetRole",
+      "iam:GetRolePolicy",
+      "iam:ListRolePolicies",
+      "iam:ListAttachedRolePolicies",
+      "iam:ListInstanceProfilesForRole",
+      "iam:GetPolicy",
+      "iam:GetPolicyVersion",
+      "iam:ListPolicyVersions",
+      "iam:ListRoleTags",
+      "logs:DescribeLogGroups",
+      "s3:GetBucketPolicy",
+      "s3:GetBucketVersioning",
+      "s3:GetEncryptionConfiguration",
+      "s3:GetBucketOwnershipControls",
+      "s3:GetBucketPublicAccessBlock",
+      "s3:GetBucketLocation",
+      "s3:GetBucketTagging",
+    ]
     resources = ["*"]
   }
 }
