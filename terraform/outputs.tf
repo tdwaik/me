@@ -58,6 +58,11 @@ output "acm_certificate_arn_us_east_1" {
   value       = local.requested_acm_certificate_arn == "" ? null : local.requested_acm_certificate_arn
 }
 
+output "date_api_url" {
+  description = "POST endpoint for date responses — paste this into public/date/index.html as the API_URL value."
+  value       = "${trimsuffix(aws_apigatewayv2_stage.date_api.invoke_url, "/")}/response"
+}
+
 output "acm_dns_validation_records" {
   description = "Create these CNAME records in Cloudflare, then wait for ACM to issue."
   value = var.create_acm_certificate ? [

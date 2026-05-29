@@ -1,0 +1,603 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="icon" href="/favicon.ico" sizes="any" />
+  <title>hey 👀</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #09090b;
+      --surface: rgba(255,255,255,0.04);
+      --surface-hover: rgba(255,255,255,0.08);
+      --border: rgba(255,255,255,0.09);
+      --border-glow: rgba(52,211,153,0.5);
+      --text: #f4f4f5;
+      --text-muted: #71717a;
+      --emerald: #34d399;
+      --emerald-dim: rgba(52,211,153,0.15);
+      --pink: #f472b6;
+      --pink-dim: rgba(244,114,182,0.15);
+      --amber: #fbbf24;
+    }
+
+    html, body {
+      height: 100%;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow-x: hidden;
+      padding: 1.5rem;
+    }
+
+    /* ── Background ── */
+    .bg-blob {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(90px);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .blob-tl {
+      top: -8rem; left: 50%;
+      transform: translateX(-50%);
+      width: 36rem; height: 36rem;
+      background: rgba(52,211,153,0.12);
+    }
+    .blob-br {
+      bottom: -10rem; right: -6rem;
+      width: 32rem; height: 32rem;
+      background: rgba(244,114,182,0.12);
+    }
+    .grid-overlay {
+      position: fixed; inset: 0;
+      background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.06) 1px, transparent 0);
+      background-size: 22px 22px;
+      pointer-events: none; z-index: 0;
+    }
+
+    /* ── Stages ── */
+    .stage {
+      position: relative; z-index: 1;
+      width: 100%; max-width: 500px;
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 1.25rem;
+      animation: stageIn 0.55s cubic-bezier(.22,1,.36,1) both;
+    }
+    .stage.active { display: flex; }
+
+    @keyframes stageIn {
+      from { opacity: 0; transform: translateY(24px) scale(0.97); }
+      to   { opacity: 1; transform: translateY(0)   scale(1); }
+    }
+
+    /* ── Card ── */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 1.75rem;
+      padding: 2.5rem 2rem 2rem;
+      backdrop-filter: blur(24px);
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .big-emoji {
+      font-size: 3.5rem;
+      line-height: 1;
+      margin-bottom: 0.5rem;
+      display: block;
+      animation: float 3s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%,100% { transform: translateY(0); }
+      50%      { transform: translateY(-10px); }
+    }
+
+    h1 {
+      font-size: 1.9rem;
+      font-weight: 700;
+      line-height: 1.2;
+      letter-spacing: -0.02em;
+    }
+    .lead {
+      font-size: 1.15rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      max-width: 340px;
+    }
+    .lead strong { color: var(--text); }
+
+    /* ── Progress dots ── */
+    .progress {
+      display: flex; gap: 6px; align-items: center;
+    }
+    .dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--border);
+      transition: all 0.3s;
+    }
+    .dot.done    { background: rgba(52,211,153,0.35); }
+    .dot.active  { background: var(--emerald); width: 22px; border-radius: 4px; }
+
+    /* ── Yes button ── */
+    .btn-yes {
+      background: linear-gradient(135deg, #34d399 0%, #059669 100%);
+      color: #fff;
+      border: none;
+      border-radius: 9999px;
+      padding: 0.9rem 2.75rem;
+      font-size: 1.05rem;
+      font-weight: 700;
+      cursor: pointer;
+      letter-spacing: 0.01em;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 0 0 0 rgba(52,211,153,0);
+      margin-top: 1rem;
+    }
+    .btn-yes:hover {
+      transform: scale(1.06);
+      box-shadow: 0 0 50px -5px rgba(52,211,153,0.6);
+    }
+    .btn-yes:active { transform: scale(0.98); }
+
+    /* ── No button — fixed, floats free ── */
+    #btn-no {
+      position: fixed;
+      background: var(--surface-hover);
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+      border-radius: 9999px;
+      padding: 0.75rem 1.75rem;
+      font-size: 0.95rem;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: opacity 0.2s, transform 0.15s;
+      z-index: 50;
+      user-select: none;
+    }
+    #btn-no:hover { border-color: rgba(244,114,182,0.4); }
+
+    .no-msg {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      min-height: 1.2em;
+      margin-top: 0.25rem;
+    }
+
+    /* ── Option grids ── */
+    .option-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(105px, 1fr));
+      gap: 0.65rem;
+      width: 100%;
+      margin: 1.25rem 0 0.5rem;
+    }
+    .option-grid.two-col {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .opt {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      padding: 1rem 0.5rem 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .opt:hover {
+      background: var(--emerald-dim);
+      border-color: rgba(52,211,153,0.3);
+      transform: translateY(-3px);
+    }
+    .opt.selected {
+      background: var(--emerald-dim);
+      border-color: var(--emerald);
+      box-shadow: 0 0 22px -4px rgba(52,211,153,0.45);
+    }
+    .opt-emoji { font-size: 2rem; line-height: 1; }
+    .opt-label {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+    .opt.selected .opt-label { color: var(--emerald); }
+
+
+    /* ── Final plan card ── */
+    .plan-card {
+      background: linear-gradient(135deg, rgba(52,211,153,0.07), rgba(244,114,182,0.07));
+      border: 1px solid rgba(52,211,153,0.25);
+      border-radius: 1.5rem;
+      padding: 1.75rem;
+      width: 100%;
+      text-align: left;
+    }
+    .plan-row {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 0.8rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .plan-row:last-child { border-bottom: none; }
+    .plan-icon { font-size: 1.6rem; flex-shrink: 0; }
+    .plan-label { font-size: 0.72rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 2px; }
+    .plan-value { font-size: 1rem; font-weight: 600; }
+
+    /* ── Particles ── */
+    #particles {
+      position: fixed; inset: 0;
+      pointer-events: none; z-index: 200;
+      overflow: hidden;
+    }
+    .particle {
+      position: absolute;
+      top: -16px;
+      border-radius: 2px;
+      animation: fall linear forwards;
+    }
+    @keyframes fall {
+      0%   { transform: translateY(0)        rotate(0deg);   opacity: 1; }
+      80%  { opacity: 1; }
+      100% { transform: translateY(105vh)    rotate(720deg); opacity: 0; }
+    }
+
+    .heart-fly {
+      position: fixed;
+      pointer-events: none;
+      z-index: 150;
+      font-size: 1.6rem;
+      animation: heartRise 1.8s ease-out forwards;
+    }
+    @keyframes heartRise {
+      0%   { opacity: 1; transform: translateY(0)     scale(0.8); }
+      100% { opacity: 0; transform: translateY(-90px) scale(1.4); }
+    }
+
+    /* ── Misc ── */
+    .tag {
+      display: inline-block;
+      background: var(--emerald-dim);
+      color: var(--emerald);
+      border: 1px solid rgba(52,211,153,0.25);
+      border-radius: 9999px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      padding: 0.25rem 0.75rem;
+    }
+  </style>
+</head>
+<body>
+
+<div class="bg-blob blob-tl"></div>
+<div class="bg-blob blob-br"></div>
+<div class="grid-overlay"></div>
+
+<!-- ═══════════════ Stage 1 — The ask ═══════════════ -->
+<div class="stage active" id="s1">
+  <div class="card">
+    <span id="main-emoji" class="big-emoji">🥺</span>
+    <h1>Hey, you.</h1>
+    <p class="lead">I have something <strong>very important</strong> to ask you...</p>
+    <p style="font-size:1.3rem;font-weight:700;margin-top:0.75rem;line-height:1.4;">
+      Will you go on a date<br>with me? 💕
+    </p>
+    <p class="no-msg" id="no-msg"></p>
+    <button class="btn-yes" onclick="handleYes()">Yes!! 💕</button>
+  </div>
+</div>
+
+<!-- ═══════════════ Stage 2 — When? ═══════════════ -->
+<div class="stage" id="s2">
+  <div class="progress">
+    <div class="dot done"></div>
+    <div class="dot active"></div>
+    <div class="dot"></div>
+    <div class="dot"></div>
+  </div>
+  <div class="card">
+    <span class="big-emoji" style="animation:none">📅</span>
+    <h1>When are you free?</h1>
+    <p class="lead">Pick a day — I'll rearrange my whole schedule.</p>
+    <div class="option-grid" id="day-grid"></div>
+  </div>
+</div>
+
+<!-- ═══════════════ Stage 3 — Food ═══════════════ -->
+<div class="stage" id="s3">
+  <div class="progress">
+    <div class="dot done"></div>
+    <div class="dot done"></div>
+    <div class="dot active"></div>
+    <div class="dot"></div>
+  </div>
+  <div class="card">
+    <span class="big-emoji" style="animation:none">🍽️</span>
+    <h1>What are we eating?</h1>
+    <p class="lead">Your call. I'm just happy to be there.</p>
+    <div class="option-grid" id="food-grid"></div>
+  </div>
+</div>
+
+<!-- ═══════════════ Stage 4 — Vibe ═══════════════ -->
+<div class="stage" id="s4">
+  <div class="progress">
+    <div class="dot done"></div>
+    <div class="dot done"></div>
+    <div class="dot done"></div>
+    <div class="dot active"></div>
+  </div>
+  <div class="card">
+    <span class="big-emoji" style="animation:none">✨</span>
+    <h1>What's the vibe?</h1>
+    <p class="lead">Set the mood — I'll make it happen.</p>
+    <div class="option-grid two-col" id="vibe-grid"></div>
+  </div>
+</div>
+
+<!-- ═══════════════ Stage 5 — The plan ═══════════════ -->
+<div class="stage" id="s5">
+  <div class="card">
+    <span class="big-emoji" style="font-size:4rem;animation:none">🎉</span>
+    <span class="tag">It's a date!!</span>
+    <h1 style="margin-top:0.5rem">Here's the plan</h1>
+    <p class="lead">Screenshot this. I'm holding you to it.</p>
+    <div class="plan-card" id="plan-card" style="margin-top:1rem"></div>
+    <p style="color:var(--text-muted);font-size:0.85rem;margin-top:0.5rem">
+      Can't wait 🩷
+    </p>
+  </div>
+</div>
+
+<!-- Floating No button -->
+<button id="btn-no" onclick="handleNo()" ontouchstart="touchNo(event)">Nope 🙄</button>
+
+<!-- Confetti layer -->
+<div id="particles"></div>
+
+<script>
+  'use strict';
+
+  // ── API config — paste the terraform output "date_api_url" here ──────────
+  const API_URL = 'https://cakzkp8ikl.execute-api.us-west-2.amazonaws.com/response';
+
+  // ── State ──────────────────────────────────────────
+  let noCount = 0;
+  let pick = { day: null, food: null, vibe: null };
+
+  // ── Data ───────────────────────────────────────────
+  const days = [
+    { e:'😑', l:'Monday'    },
+    { e:'🙂', l:'Tuesday'   },
+    { e:'😊', l:'Wednesday' },
+    { e:'😎', l:'Thursday'  },
+    { e:'🥳', l:'Friday'    },
+    { e:'✨', l:'Saturday'  },
+    { e:'☀️', l:'Sunday'    },
+  ];
+  const foods = [
+    { e:'🍕', l:'Pizza'       },
+    { e:'🍣', l:'Sushi'       },
+    { e:'🍝', l:'Italian'     },
+    { e:'🌮', l:'Tacos'       },
+    { e:'🍔', l:'Burgers'     },
+    { e:'🍜', l:'Ramen'       },
+    { e:'🥗', l:'Healthy bowl'},
+    { e:'🎲', l:'Surprise me' },
+  ];
+  const vibes = [
+    { e:'🎬', l:'Movie night'   },
+    { e:'🌆', l:'Fancy dinner'  },
+    { e:'🌿', l:'Outdoors'      },
+    { e:'🛋️', l:'Cozy & chill' },
+  ];
+
+  // ── Build option grids ─────────────────────────────
+  function buildGrid(gridId, items, key, onPick) {
+    const g = document.getElementById(gridId);
+    items.forEach(item => {
+      const d = document.createElement('div');
+      d.className = 'opt';
+      d.innerHTML = `<span class="opt-emoji">${item.e}</span><span class="opt-label">${item.l}</span>`;
+      d.addEventListener('click', () => {
+        g.querySelectorAll('.opt').forEach(c => c.classList.remove('selected'));
+        d.classList.add('selected');
+        pick[key] = item.l;
+        setTimeout(onPick, 350);
+      });
+      g.appendChild(d);
+    });
+  }
+
+  buildGrid('day-grid',  days,  'day',  () => go(3));
+  buildGrid('food-grid', foods, 'food', () => go(4));
+  buildGrid('vibe-grid', vibes, 'vibe', reveal);
+
+  // ── No button ──────────────────────────────────────
+  const btnNo = document.getElementById('btn-no');
+  const noMsgs = [
+    'Nope 🙄',
+    'Still no 😂',
+    'Not happening 🙈',
+    'Try harder 😏',
+    'You wish 😤',
+    'Never!! 🚀',
+    'NEVERR 🏃💨',
+  ];
+  const reactionMsgs = [
+    '',
+    'Are you sure?? 🥺',
+    'Come onnn…',
+    'I have snacks btw 🍟',
+    'Please please please 🙏',
+    'I\'ll be really fun I promise 😭',
+    'Ok fine I\'ll just cry then 😢',
+  ];
+
+  function placeNo() {
+    const margin = 20;
+    const maxX = window.innerWidth  - btnNo.offsetWidth  - margin;
+    const maxY = window.innerHeight - btnNo.offsetHeight - margin;
+    btnNo.style.left = (margin + Math.random() * Math.max(0, maxX - margin)) + 'px';
+    btnNo.style.top  = (margin + Math.random() * Math.max(0, maxY - margin)) + 'px';
+  }
+
+  // Initial placement — bottom-right-ish so it's not covering the card
+  setTimeout(() => {
+    btnNo.style.left = (window.innerWidth  * 0.65 - btnNo.offsetWidth  / 2) + 'px';
+    btnNo.style.top  = (window.innerHeight * 0.72 - btnNo.offsetHeight / 2) + 'px';
+  }, 100);
+
+  // Run from cursor
+  document.addEventListener('mousemove', e => {
+    if (!document.getElementById('s1').classList.contains('active')) return;
+    const r   = btnNo.getBoundingClientRect();
+    const cx  = r.left + r.width / 2;
+    const cy  = r.top  + r.height / 2;
+    const dx  = e.clientX - cx;
+    const dy  = e.clientY - cy;
+    const d   = Math.sqrt(dx * dx + dy * dy);
+    if (d < 130) {
+      const angle  = Math.atan2(dy, dx) + Math.PI;
+      const speed  = 160 + (130 - d) * 2.5;
+      let nx = r.left + Math.cos(angle) * speed;
+      let ny = r.top  + Math.sin(angle) * speed;
+      const margin = 12;
+      nx = Math.max(margin, Math.min(window.innerWidth  - r.width  - margin, nx));
+      ny = Math.max(margin, Math.min(window.innerHeight - r.height - margin, ny));
+      btnNo.style.left = nx + 'px';
+      btnNo.style.top  = ny + 'px';
+    }
+  });
+
+  function handleNo() {
+    noCount = Math.min(noCount + 1, noMsgs.length - 1);
+    btnNo.textContent = noMsgs[noCount];
+    placeNo();
+    const msg = document.getElementById('no-msg');
+    if (msg) msg.textContent = reactionMsgs[Math.min(noCount, reactionMsgs.length - 1)];
+  }
+
+  function touchNo(e) {
+    e.preventDefault();
+    handleNo();
+  }
+
+  // ── Stage nav ──────────────────────────────────────
+  function go(n) {
+    document.querySelectorAll('.stage').forEach(s => s.classList.remove('active'));
+    document.getElementById('s' + n).classList.add('active');
+    if (n !== 1) btnNo.style.display = 'none';
+  }
+
+  // ── Yes ────────────────────────────────────────────
+  function handleYes() {
+    const btn = document.querySelector('.btn-yes');
+    btn.disabled = true;
+    btn.textContent = '💕 Yay!!';
+    for (let i = 0; i < 14; i++) setTimeout(spawnHeart, i * 70);
+    setTimeout(() => go(2), 900);
+  }
+
+  function spawnHeart() {
+    const hearts = ['💕','💖','💗','💓','💝','🩷','❤️'];
+    const h = document.createElement('div');
+    h.className = 'heart-fly';
+    h.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+    h.style.left = (15 + Math.random() * 70) + 'vw';
+    h.style.top  = (25 + Math.random() * 50) + 'vh';
+    document.body.appendChild(h);
+    setTimeout(() => h.remove(), 1900);
+  }
+
+  // ── Save to DynamoDB via API Gateway ──────────────
+  async function saveResponse() {
+    if (API_URL.startsWith('PASTE_')) return;
+    try {
+      await fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ day: pick.day, food: pick.food, vibe: pick.vibe }),
+      });
+    } catch { /* silent — don't break the fun */ }
+  }
+
+  // ── Reveal final plan ──────────────────────────────
+  function reveal() {
+    go(5);
+    saveResponse();
+    const card = document.getElementById('plan-card');
+    card.innerHTML = `
+      <div class="plan-row">
+        <span class="plan-icon">📅</span>
+        <div><div class="plan-label">Day</div><div class="plan-value">${pick.day}</div></div>
+      </div>
+      <div class="plan-row">
+        <span class="plan-icon">🍽️</span>
+        <div><div class="plan-label">Food</div><div class="plan-value">${pick.food}</div></div>
+      </div>
+      <div class="plan-row">
+        <span class="plan-icon">✨</span>
+        <div><div class="plan-label">Vibe</div><div class="plan-value">${pick.vibe}</div></div>
+      </div>
+      <div class="plan-row">
+        <span class="plan-icon">🩷</span>
+        <div><div class="plan-label">Attending</div><div class="plan-value">You + Me</div></div>
+      </div>
+    `;
+    confetti();
+  }
+
+  // ── Confetti ───────────────────────────────────────
+  function confetti() {
+    const container = document.getElementById('particles');
+    const colors = ['#34d399','#fbbf24','#f472b6','#60a5fa','#a78bfa','#fb7185','#fff'];
+    for (let i = 0; i < 90; i++) {
+      const p = document.createElement('div');
+      p.className = 'particle';
+      const isCircle = Math.random() > 0.6;
+      const isTape   = !isCircle && Math.random() > 0.5;
+      const w = isTape ? 3  : 7 + Math.random() * 8;
+      const h = isTape ? 14 : 7 + Math.random() * 8;
+      p.style.cssText = `
+        left:${Math.random()*100}vw;
+        width:${w}px; height:${h}px;
+        background:${colors[Math.floor(Math.random()*colors.length)]};
+        border-radius:${isCircle ? '50%' : '2px'};
+        animation-duration:${2.5+Math.random()*2.5}s;
+        animation-delay:${Math.random()*0.8}s;
+      `;
+      container.appendChild(p);
+      setTimeout(() => p.remove(), 7000);
+    }
+  }
+
+  window.addEventListener('resize', () => {
+    if (document.getElementById('s1').classList.contains('active')) placeNo();
+  });
+</script>
+</body>
+</html>

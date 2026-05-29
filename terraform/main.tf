@@ -266,10 +266,8 @@ resource "aws_iam_role" "github_deploy" {
 
 data "aws_iam_policy_document" "deploy" {
   statement {
-    sid = "AllowBucketList"
-    actions = [
-      "s3:ListBucket"
-    ]
+    sid     = "AllowBucketList"
+    actions = ["s3:ListBucket"]
     resources = ["arn:aws:s3:::${var.s3_bucket_name}"]
   }
 
@@ -294,6 +292,92 @@ data "aws_iam_policy_document" "deploy" {
       ]
       resources = ["arn:aws:cloudfront::${data.aws_caller_identity.current.account_id}:distribution/${local.effective_cloudfront_distribution_id}"]
     }
+  }
+
+  # Terraform state
+  statement {
+    sid     = "AllowTerraformStateBucketList"
+    actions = ["s3:ListBucket"]
+    resources = ["arn:aws:s3:::thaer-terraform"]
+  }
+
+  statement {
+    sid     = "AllowTerraformStateReadWrite"
+    actions = ["s3:GetObject", "s3:PutObject", "s3:DeleteObject"]
+    resources = ["arn:aws:s3:::thaer-terraform/*"]
+  }
+
+  # DynamoDB — date-responses table only
+  statement {
+    sid = "AllowDynamoDBDateResponses"
+    actions = [
+      "dynamodb:CreateTable",
+      "dynamodb:DeleteTable",
+      "dynamodb:DescribeTable",
+      "dynamodb:UpdateTable",
+      "dynamodb:DescribeContinuousBackups",
+      "dynamodb:DescribeTimeToLive",
+      "dynamodb:ListTagsOfResource",
+      "dynamodb:TagResource",
+      "dynamodb:UntagResource",
+    ]
+    resources = ["arn:aws:dynamodb:${var.aws_region}:${data.aws_caller_identity.current.account_id}:table/date-responses"]
+  }
+
+  # Lambda — date-api function only
+  statement {
+    sid = "AllowLambdaDateApi"
+    actions = [
+      "lambda:CreateFunction",
+      "lambda:DeleteFunction",
+      "lambda:GetFunction",
+      "lambda:GetFunctionConfiguration",
+      "lambda:UpdateFunctionCode",
+      "lambda:UpdateFunctionConfiguration",
+      "lambda:AddPermission",
+      "lambda:RemovePermission",
+      "lambda:GetPolicy",
+      "lambda:ListVersionsByFunction",
+      "lambda:GetFunctionCodeSigningConfig",
+      "lambda:TagResource",
+      "lambda:UntagResource",
+      "lambda:ListTags",
+    ]
+    resources = ["arn:aws:lambda:${var.aws_region}:${data.aws_caller_identity.current.account_id}:function:date-api-save-response"]
+  }
+
+  # API Gateway HTTP API
+  statement {
+    sid     = "AllowAPIGateway"
+    actions = ["apigateway:*"]
+    resources = ["arn:aws:apigateway:${var.aws_region}::*"]
+  }
+
+  # IAM — scoped to the Lambda execution role only
+  statement {
+    sid = "AllowIAMDateApiLambdaRole"
+    actions = [
+      "iam:CreateRole",
+      "iam:DeleteRole",
+      "iam:GetRole",
+      "iam:TagRole",
+      "iam:UntagRole",
+      "iam:PutRolePolicy",
+      "iam:DeleteRolePolicy",
+      "iam:GetRolePolicy",
+      "iam:PassRole",
+      "iam:ListRolePolicies",
+      "iam:ListAttachedRolePolicies",
+      "iam:ListInstanceProfilesForRole",
+    ]
+    resources = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/date-api-lambda-role"]
+  }
+
+  # Needed by Terraform to verify log group state after Lambda creation
+  statement {
+    sid     = "AllowLogsDescribe"
+    actions = ["logs:DescribeLogGroups"]
+    resources = ["*"]
   }
 }
 

@@ -1,3 +1,6 @@
+# Claude
+.claude/
+
 # Logs
 logs
 *.log
@@ -39,3 +42,6 @@ terraform.rc
 
 # Terraform variables with secrets (keep env templates tracked)
 *.auto.tfvars
+
+# Generated Lambda zip (built by Terraform archive_file)
+terraform/lambda/*.zip
