@@ -27,6 +27,8 @@ exports.handler = async (event) => {
     return { statusCode: 400, headers: CORS, body: JSON.stringify({ error: 'missing fields' }) };
   }
 
+  const ip = event.requestContext?.http?.sourceIp ?? 'unknown';
+
   await client.send(new PutItemCommand({
     TableName: TABLE,
     Item: {
@@ -35,6 +37,7 @@ exports.handler = async (event) => {
       day:        { S: String(day)  },
       food:       { S: String(food) },
       vibe:       { S: String(vibe) },
+      ip:         { S: ip           },
     },
   }));
 
