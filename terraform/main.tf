@@ -266,8 +266,8 @@ resource "aws_iam_role" "github_deploy" {
 
 data "aws_iam_policy_document" "deploy" {
   statement {
-    sid     = "AllowBucketList"
-    actions = ["s3:ListBucket"]
+    sid = "AllowS3BucketManagement"
+    actions = ["s3:ListBucket", "s3:Put*", "s3:DeleteBucketPolicy", "s3:DeleteBucketWebsite"]
     resources = ["arn:aws:s3:::${var.s3_bucket_name}"]
   }
 
