@@ -9,18 +9,21 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg: #09090b;
-      --surface: rgba(255,255,255,0.04);
-      --surface-hover: rgba(255,255,255,0.08);
-      --border: rgba(255,255,255,0.09);
-      --border-glow: rgba(52,211,153,0.5);
-      --text: #f4f4f5;
-      --text-muted: #71717a;
-      --emerald: #34d399;
-      --emerald-dim: rgba(52,211,153,0.15);
-      --pink: #f472b6;
-      --pink-dim: rgba(244,114,182,0.15);
-      --amber: #fbbf24;
+      --bg: #1a1630;
+      --surface: rgba(255,255,255,0.08);
+      --surface-hover: rgba(255,255,255,0.12);
+      --border: rgba(255,255,255,0.12);
+      --border-glow: rgba(232,150,176,0.5);
+      --text: #f5f0ff;
+      --text-muted: #8878a0;
+      --gold: #e896b0;
+      --gold-dim: rgba(232,150,176,0.12);
+      --rose: #c47aff;
+      --rose-dim: rgba(196,122,255,0.1);
+    }
+    :root {
+      --emerald: var(--gold);
+      --emerald-dim: var(--gold-dim);
     }
 
     html, body {
@@ -50,18 +53,18 @@
     .blob-tl {
       top: -8rem; left: 50%;
       transform: translateX(-50%);
-      width: 36rem; height: 36rem;
-      background: rgba(52,211,153,0.12);
+      width: 40rem; height: 40rem;
+      background: rgba(196,122,255,0.2);
     }
     .blob-br {
       bottom: -10rem; right: -6rem;
-      width: 32rem; height: 32rem;
-      background: rgba(244,114,182,0.12);
+      width: 34rem; height: 34rem;
+      background: rgba(232,150,176,0.22);
     }
     .grid-overlay {
       position: fixed; inset: 0;
-      background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.06) 1px, transparent 0);
-      background-size: 22px 22px;
+      background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.04) 1px, transparent 0);
+      background-size: 24px 24px;
       pointer-events: none; z-index: 0;
     }
 
@@ -133,34 +136,34 @@
       background: var(--border);
       transition: all 0.3s;
     }
-    .dot.done    { background: rgba(52,211,153,0.35); }
-    .dot.active  { background: var(--emerald); width: 22px; border-radius: 4px; }
+    .dot.done    { background: rgba(232,150,176,0.3); }
+    .dot.active  { background: var(--gold); width: 22px; border-radius: 4px; }
 
     /* ── Yes button ── */
     .btn-yes {
-      background: linear-gradient(135deg, #34d399 0%, #059669 100%);
+      background: linear-gradient(135deg, #e896b0 0%, #b05080 100%);
       color: #fff;
       border: none;
       border-radius: 9999px;
       padding: 0.9rem 2.75rem;
       font-size: 1.05rem;
-      font-weight: 700;
+      font-weight: 600;
       cursor: pointer;
-      letter-spacing: 0.01em;
+      letter-spacing: 0.03em;
       transition: transform 0.2s, box-shadow 0.2s;
-      box-shadow: 0 0 0 0 rgba(52,211,153,0);
+      box-shadow: 0 0 0 0 rgba(232,150,176,0);
       margin-top: 1rem;
     }
     .btn-yes:hover {
       transform: scale(1.06);
-      box-shadow: 0 0 50px -5px rgba(52,211,153,0.6);
+      box-shadow: 0 0 50px -5px rgba(232,150,176,0.6);
     }
     .btn-yes:active { transform: scale(0.98); }
 
     /* ── No button — fixed, floats free ── */
     #btn-no {
       position: fixed;
-      background: var(--surface-hover);
+      background: rgba(13,11,24,0.75);
       color: var(--text-muted);
       border: 1px solid var(--border);
       border-radius: 9999px;
@@ -206,14 +209,14 @@
       gap: 0.4rem;
     }
     .opt:hover {
-      background: var(--emerald-dim);
-      border-color: rgba(52,211,153,0.3);
+      background: var(--gold-dim);
+      border-color: rgba(232,150,176,0.35);
       transform: translateY(-3px);
     }
     .opt.selected {
-      background: var(--emerald-dim);
-      border-color: var(--emerald);
-      box-shadow: 0 0 22px -4px rgba(52,211,153,0.45);
+      background: var(--gold-dim);
+      border-color: var(--gold);
+      box-shadow: 0 0 22px -4px rgba(232,150,176,0.4);
     }
     .opt-emoji { font-size: 2rem; line-height: 1; }
     .opt-label {
@@ -221,13 +224,13 @@
       color: var(--text-muted);
       font-weight: 500;
     }
-    .opt.selected .opt-label { color: var(--emerald); }
+    .opt.selected .opt-label { color: var(--gold); }
 
 
     /* ── Final plan card ── */
     .plan-card {
-      background: linear-gradient(135deg, rgba(52,211,153,0.07), rgba(244,114,182,0.07));
-      border: 1px solid rgba(52,211,153,0.25);
+      background: linear-gradient(135deg, rgba(196,122,255,0.07), rgba(232,150,176,0.07));
+      border: 1px solid rgba(232,150,176,0.2);
       border-radius: 1.5rem;
       padding: 1.75rem;
       width: 100%;
@@ -278,9 +281,9 @@
     /* ── Misc ── */
     .tag {
       display: inline-block;
-      background: var(--emerald-dim);
-      color: var(--emerald);
-      border: 1px solid rgba(52,211,153,0.25);
+      background: var(--gold-dim);
+      color: var(--gold);
+      border: 1px solid rgba(232,150,176,0.25);
       border-radius: 9999px;
       font-size: 0.72rem;
       font-weight: 600;
@@ -299,7 +302,7 @@
 <!-- ═══════════════ Stage 1 — The ask ═══════════════ -->
 <div class="stage active" id="s1">
   <div class="card">
-    <span id="main-emoji" class="big-emoji">🥺</span>
+    <span id="main-emoji" class="big-emoji">😏</span>
     <h1>Hey, you.</h1>
     <p class="lead">I have something <strong>very important</strong> to ask you...</p>
     <p style="font-size:1.3rem;font-weight:700;margin-top:0.75rem;line-height:1.4;">
@@ -400,12 +403,13 @@
   ];
   const foods = [
     { e:'🍕', l:'Pizza'       },
-    { e:'🍣', l:'Sushi'       },
+    { e:'🫓', l:'Manakish'    },
     { e:'🍝', l:'Italian'     },
-    { e:'🌮', l:'Tacos'       },
-    { e:'🍔', l:'Burgers'     },
-    { e:'🍜', l:'Ramen'       },
-    { e:'🥗', l:'Healthy bowl'},
+    { e:'🥙', l:'Shawarma'    },
+    { e:'🍳', l:'Ftoor'       },
+    { e:'🍢', l:'Mashawi'     },
+    { e:'☕', l:'Coffee'      },
+    { e:'🍖', l:'Mansaf'      },
     { e:'🎲', l:'Surprise me' },
   ];
   const vibes = [
@@ -413,6 +417,7 @@
     { e:'🌆', l:'Fancy dinner'  },
     { e:'🌿', l:'Outdoors'      },
     { e:'🛋️', l:'Cozy & chill' },
+    { e:'🚗', l:'Drive'         },
   ];
 
   // ── Build option grids ─────────────────────────────
@@ -465,10 +470,10 @@
     btnNo.style.top  = (margin + Math.random() * Math.max(0, maxY - margin)) + 'px';
   }
 
-  // Initial placement — bottom-right-ish so it's not covering the card
+  // Initial placement — to the right of the Yes button
   setTimeout(() => {
-    btnNo.style.left = (window.innerWidth  * 0.65 - btnNo.offsetWidth  / 2) + 'px';
-    btnNo.style.top  = (window.innerHeight * 0.72 - btnNo.offsetHeight / 2) + 'px';
+    btnNo.style.left = (window.innerWidth  / 2 + 110) + 'px';
+    btnNo.style.top  = (window.innerHeight * 0.62 - btnNo.offsetHeight / 2) + 'px';
   }, 100);
 
   // Run from cursor
@@ -574,7 +579,7 @@
   // ── Confetti ───────────────────────────────────────
   function confetti() {
     const container = document.getElementById('particles');
-    const colors = ['#34d399','#fbbf24','#f472b6','#60a5fa','#a78bfa','#fb7185','#fff'];
+    const colors = ['#e896b0','#c47aff','#f4c2d4','#a855d4','#f9a8d4','#d8b4fe','#ffffff'];
     for (let i = 0; i < 90; i++) {
       const p = document.createElement('div');
       p.className = 'particle';
